@@ -20,7 +20,7 @@ class App extends React.Component {
     render(){   
         return (
             <div>
-                <button className="span4 text-right" onClick={this.hyva}>hyva</button>
+                <button onClick={this.hyva}>hyva</button>
                 <div>{this.state.hyva}</div>
                 <button onClick={this.neutraali}>neutraali</button>
                 <div>{this.state.neutraali}</div>
