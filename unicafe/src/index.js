@@ -23,32 +23,33 @@ class App extends React.Component {
     }
     
     render(){  
-        const keskiarvo = (this.state.hyva - this.state.paha)/this.state.kaikki
-        const prosentti = (this.state.hyva / this.state.kaikki) * 100
+        const keskiarvo = (this.state.hyva - this.state.paha)/this.state.kaikki ? (this.state.hyva - this.state.paha)/this.state.kaikki : 0
+        const prosentti = (this.state.hyva / this.state.kaikki) * 100 ? (this.state.hyva / this.state.kaikki) * 100 : 0
  
         return (
             <div>
                 <Button nimi= 'hyvä' funktio={this.hyva} tyyppi={this.state.hyva}/>
                 <Button nimi = 'neutraali' funktio={this.neutraali} tyyppi={this.state.neutraali}/>
                 <Button nimi = 'paha' funktio={this.paha} tyyppi={this.state.paha}/>
-                <h1>keskiarvo: {keskiarvo ? keskiarvo : 0}</h1>
-                <h1>positiivisia: {prosentti ? prosentti : 0}%</h1>
-                <Statistic props={keskiarvo} />
+                <Statistics keskiarvo={keskiarvo} prosentti={prosentti} />
             </div>
         )
     }
 }
-const Statistics = () => {
+const Statistics = (props) => {
+    const {keskiarvo, prosentti} = props
     return (
         <div>  
+            <Statistic nimi='keskiarvo' arvo={keskiarvo} prosentti='ei' />
+            <Statistic nimi='positiivisia' arvo={prosentti} prosentti='kylla'/>
         </div>
     )
 }
 const Statistic = (props) => {
-    console.log(props.keskiarvo)
+    const {nimi, arvo, prosentti} = props
     return (
         <div>
-            <h1>{props ? 'kesk' : 'eikesk'} </h1>
+            <h1>{nimi}: {arvo} {prosentti==='kylla' ? '%' : ''}</h1>
         </div>
     )
 }
