@@ -7,19 +7,23 @@ class App extends React.Component {
         hyva: 0,
         neutraali: 0,
         paha: 0,
-        kaikki: 0
+        kaikki: 0,
+        palautettu: false,
     }
     hyva = () => {
         this.setState({hyva: this.state.hyva + 1,
-                       kaikki: this.state.kaikki + 1})
+                       kaikki: this.state.kaikki + 1,
+                       palautettu: true})
     }
     neutraali = () => {
         this.setState({neutraali: this.state.neutraali + 1,
-                       kaikki: this.state.kaikki + 1})
+                       kaikki: this.state.kaikki + 1,
+                       palautettu: true})
     }
     paha = () => {
         this.setState({paha: this.state.paha + 1,
-                       kaikki: this.state.kaikki + 1})
+                       kaikki: this.state.kaikki + 1,
+                       palautettu: true})
     }
     
     render(){  
@@ -28,20 +32,28 @@ class App extends React.Component {
  
         return (
             <div>
-                <Button nimi= 'hyvä' funktio={this.hyva} tyyppi={this.state.hyva}/>
-                <Button nimi = 'neutraali' funktio={this.neutraali} tyyppi={this.state.neutraali}/>
-                <Button nimi = 'paha' funktio={this.paha} tyyppi={this.state.paha}/>
-                <Statistics keskiarvo={keskiarvo} prosentti={prosentti} />
+                <Button nimi= 'hyvä' funktio={this.hyva} tyyppi={this.state.hyva} palautettu={this.state.palautettu}/>
+                <Button nimi = 'neutraali' funktio={this.neutraali} tyyppi={this.state.neutraali} palautettu={this.state.palautettu}/>
+                <Button nimi = 'paha' funktio={this.paha} tyyppi={this.state.paha} palautettu={this.state.palautettu}/>
+                <Statistics keskiarvo={keskiarvo} prosentti={prosentti} palautettu={this.state.palautettu} />
             </div>
         )
     }
 }
 const Statistics = (props) => {
-    const {keskiarvo, prosentti} = props
+    const {keskiarvo, prosentti, palautettu} = props
+    if (palautettu) {
     return (
         <div>  
             <Statistic nimi='keskiarvo' arvo={keskiarvo} prosentti='ei' />
             <Statistic nimi='positiivisia' arvo={prosentti} prosentti='kylla'/>
+        </div>   
+    ) 
+    }
+    return (
+        <div>
+            <h1>Statistiikka</h1>
+            Anna palautetta
         </div>
     )
 }
@@ -54,12 +66,13 @@ const Statistic = (props) => {
     )
 }
 
-const Button = ({nimi, tyyppi, funktio}) => {
+const Button = (props) => {
+    const {nimi, tyyppi, funktio, palautettu} = props
     console.log('nimi', nimi)
     return (
         <div>
             <button onClick={funktio}>{nimi}</button>
-            <h1>{tyyppi}</h1>
+            <h1>{palautettu ? tyyppi : ''}</h1>
         </div>
     )
 }
