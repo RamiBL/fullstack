@@ -4,6 +4,7 @@ import './index.css';
 
 class App extends React.Component {
     state = {
+        ekstra: 0,
         hyva: 0,
         neutraali: 0,
         paha: 0,
@@ -25,6 +26,15 @@ class App extends React.Component {
                        kaikki: this.state.kaikki + 1,
                        palautettu: true})
     }
+
+    painettu = (props) => () => {
+        const {arvo} = props
+        const obj = {}
+        obj[arvo] = this.state.arvo + 1
+        obj[this.state.kaikki] = this.state.kaikki + 1
+        obj[this.state.palautettu] = true
+        this.setState(obj)
+    }
     
     render(){  
         const keskiarvo = (this.state.hyva - this.state.paha)/this.state.kaikki ? (this.state.hyva - this.state.paha)/this.state.kaikki : 0
@@ -32,6 +42,8 @@ class App extends React.Component {
  
         return (
             <div>
+                <Button2 funktio={this.painettu('ekstra')}/>
+                {this.state.ekstra}
                 <Button nimi= 'hyvä' funktio={this.hyva} tyyppi={this.state.hyva} palautettu={this.state.palautettu}/>
                 <Button nimi = 'neutraali' funktio={this.neutraali} tyyppi={this.state.neutraali} palautettu={this.state.palautettu}/>
                 <Button nimi = 'paha' funktio={this.paha} tyyppi={this.state.paha} palautettu={this.state.palautettu}/>
@@ -68,11 +80,19 @@ const Statistic = (props) => {
 
 const Button = (props) => {
     const {nimi, tyyppi, funktio, palautettu} = props
-    console.log('nimi', nimi)
     return (
         <div>
             <button onClick={funktio}>{nimi}</button>
             <h1>{palautettu ? tyyppi : ''}</h1>
+        </div>
+    )
+}
+const Button2 = (props) => {
+    const {funktio} = props
+    console.log(funktio)
+    return (
+        <div>
+            <button onClick={funktio}>ekstra</button>
         </div>
     )
 }
