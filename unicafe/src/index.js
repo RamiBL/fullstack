@@ -27,13 +27,10 @@ class App extends React.Component {
                        palautettu: true})
     }
 
+    
     painettu = (props) => () => {
-        const {arvo} = props
-        const obj = {}
-        obj[arvo] = this.state.arvo + 1
-        obj[this.state.kaikki] = this.state.kaikki + 1
-        obj[this.state.palautettu] = true
-        this.setState(obj)
+        const tila = {kaikki: this.state.kaikki +1, palautettu: true,}
+        this.setState(Object.assign(props, tila))
     }
     
     render(){  
@@ -42,11 +39,9 @@ class App extends React.Component {
  
         return (
             <div>
-                <Button2 funktio={this.painettu('ekstra')}/>
-                {this.state.ekstra}
-                <Button nimi= 'hyvä' funktio={this.hyva} tyyppi={this.state.hyva} palautettu={this.state.palautettu}/>
-                <Button nimi = 'neutraali' funktio={this.neutraali} tyyppi={this.state.neutraali} palautettu={this.state.palautettu}/>
-                <Button nimi = 'paha' funktio={this.paha} tyyppi={this.state.paha} palautettu={this.state.palautettu}/>
+                <Button nimi='hyvä' funktio={this.painettu({hyva: this.state.hyva + 1})} tyyppi={this.state.hyva} palautettu={this.state.palautettu}/>
+                <Button nimi = 'neutraali' funktio={this.painettu({neutraali: this.state.neutraali + 1})} tyyppi={this.state.neutraali} palautettu={this.state.palautettu}/>
+                <Button nimi = 'paha' funktio={this.painettu({paha: this.state.paha + 1})} tyyppi={this.state.paha} palautettu={this.state.palautettu}/>
                 <Statistics keskiarvo={keskiarvo} prosentti={prosentti} palautettu={this.state.palautettu} />
             </div>
         )
@@ -87,15 +82,7 @@ const Button = (props) => {
         </div>
     )
 }
-const Button2 = (props) => {
-    const {funktio} = props
-    console.log(funktio)
-    return (
-        <div>
-            <button onClick={funktio}>ekstra</button>
-        </div>
-    )
-}
+
 ReactDOM.render(<App />, document.getElementById('root'));
 
 
