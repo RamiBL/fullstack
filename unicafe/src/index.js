@@ -11,23 +11,7 @@ class App extends React.Component {
         kaikki: 0,
         palautettu: false,
     }
-    hyva = () => {
-        this.setState({hyva: this.state.hyva + 1,
-                       kaikki: this.state.kaikki + 1,
-                       palautettu: true})
-    }
-    neutraali = () => {
-        this.setState({neutraali: this.state.neutraali + 1,
-                       kaikki: this.state.kaikki + 1,
-                       palautettu: true})
-    }
-    paha = () => {
-        this.setState({paha: this.state.paha + 1,
-                       kaikki: this.state.kaikki + 1,
-                       palautettu: true})
-    }
 
-    
     painettu = (props) => () => {
         const tila = {kaikki: this.state.kaikki +1, palautettu: true,}
         this.setState(Object.assign(props, tila))
@@ -39,21 +23,37 @@ class App extends React.Component {
  
         return (
             <div>
-                <Button nimi='hyvä' funktio={this.painettu({hyva: this.state.hyva + 1})} tyyppi={this.state.hyva} palautettu={this.state.palautettu}/>
-                <Button nimi = 'neutraali' funktio={this.painettu({neutraali: this.state.neutraali + 1})} tyyppi={this.state.neutraali} palautettu={this.state.palautettu}/>
-                <Button nimi = 'paha' funktio={this.painettu({paha: this.state.paha + 1})} tyyppi={this.state.paha} palautettu={this.state.palautettu}/>
-                <Statistics keskiarvo={keskiarvo} prosentti={prosentti} palautettu={this.state.palautettu} />
+                <table>
+                    <tbody>
+                        <tr>
+                            <Button nimi='hyvä' funktio={this.painettu({hyva: this.state.hyva + 1})} tyyppi={this.state.hyva} palautettu={this.state.palautettu}/>
+                            <Button nimi = 'neutraali' funktio={this.painettu({neutraali: this.state.neutraali + 1})} tyyppi={this.state.neutraali} palautettu={this.state.palautettu}/>
+                            <Button nimi = 'paha' funktio={this.painettu({paha: this.state.paha + 1})} tyyppi={this.state.paha} palautettu={this.state.palautettu}/>                       
+                        </tr>
+                    </tbody>
+                </table>
+ 
+                <Statistics hyva={this.state.hyva} neutraali={this.state.neutraali} huono={this.state.paha} keskiarvo={keskiarvo} prosentti={prosentti} palautettu={this.state.palautettu} />
             </div>
         )
     }
 }
+
 const Statistics = (props) => {
-    const {keskiarvo, prosentti, palautettu} = props
+    const {keskiarvo, prosentti, palautettu, hyva, neutraali, huono} = props
     if (palautettu) {
     return (
         <div>  
-            <Statistic nimi='keskiarvo' arvo={keskiarvo} prosentti='ei' />
-            <Statistic nimi='positiivisia' arvo={prosentti} prosentti='kylla'/>
+            <h1>Statistiikka</h1>
+            <table>
+                <tbody>
+                        <Statistic nimi= 'hyvä' arvo={hyva} prosentti={false}/>
+                        <Statistic nimi= 'neutraali' arvo={neutraali} prosentti={false}/>
+                        <Statistic nimi= 'huono' arvo={huono} prosentti={false}/>
+                        <Statistic nimi='keskiarvo' arvo={keskiarvo} prosentti={false} />
+                        <Statistic nimi='positiivisia' arvo={prosentti} prosentti={true}/>                 
+                </tbody>
+            </table>
         </div>   
     ) 
     }
@@ -64,22 +64,27 @@ const Statistics = (props) => {
         </div>
     )
 }
+
 const Statistic = (props) => {
     const {nimi, arvo, prosentti} = props
     return (
-        <div>
-            <h1>{nimi}: {arvo} {prosentti==='kylla' ? '%' : ''}</h1>
-        </div>
+        <tr>
+        <td>
+            {nimi}
+        </td>
+        <td>
+            {arvo} {prosentti ? '%' : ''}
+        </td>
+        </tr>
     )
 }
 
 const Button = (props) => {
     const {nimi, tyyppi, funktio, palautettu} = props
     return (
-        <div>
+            <td>
             <button onClick={funktio}>{nimi}</button>
-            <h1>{palautettu ? tyyppi : ''}</h1>
-        </div>
+            </td>
     )
 }
 
