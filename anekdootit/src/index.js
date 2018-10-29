@@ -5,27 +5,40 @@ class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      selected: 0
+      selected: 0,
+      votes: Array(anecdotes.length).fill(0),
+      voted: false
     }
   }
   
   randomQuote = () => {
-     this.setState({selected: Math.floor(Math.random()*6)})
+     this.setState({selected: Math.floor(Math.random()*6),
+                    voted: false})
+  }
+  
+  vote = () => {
+    if (!this.state.voted) {
+        const newvotes = [...this.state.votes]
+        newvotes[this.state.selected] = newvotes[this.state.selected] + 1
+        this.setState({votes: newvotes,
+                       voted: true}) 
+    }
   }
 
   render() {
-    console.log(this.state.selected)
     return (
       <div>
         {anecdotes[this.state.selected]} 
         <br/>
+        Has {this.state.votes[this.state.selected]} votes
+        <br/>
+        <button onClick={this.vote}>vote</button>
         <button onClick={this.randomQuote}>next anecdote</button>
       </div>
     )
   }
 }
 
-//{this.props.anecdotes[this.state.selected]}
 const anecdotes = [
   'If it hurts, do it more often',
   'Adding manpower to a late software project makes it later!',
