@@ -26,6 +26,9 @@ class App extends React.Component {
   }
 
   render() {
+    const most = Math.max(...this.state.votes)
+    const biggest = this.state.votes.indexOf(most)
+    console.log(biggest)
     return (
       <div>
         {anecdotes[this.state.selected]} 
@@ -34,6 +37,9 @@ class App extends React.Component {
         <br/>
         <button onClick={this.vote}>vote</button>
         <button onClick={this.randomQuote}>next anecdote</button>
+        <h1>Anecdote with the most votes:</h1>
+        {anecdotes[biggest]} <br/> 
+        with {most} votes
       </div>
     )
   }
